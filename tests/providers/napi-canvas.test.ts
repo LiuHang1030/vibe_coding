@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { describe, it, expect, beforeAll } from 'vitest'
 import { promises as fs } from 'node:fs'
 import { tmpdir } from 'node:os'
