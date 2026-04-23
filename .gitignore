@@ -23,3 +23,11 @@ TestResults.xml
 
 # Superpowers brainstorm session files
 .superpowers/
+
+node_modules/
+out/
+dist/
+runs/
+.env
+.env.local
+*.log
