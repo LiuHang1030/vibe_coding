@@ -240,11 +240,21 @@ pnpm add -D electron electron-vite vite @vitejs/plugin-react \
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "out"
+    "composite": true,
+    "outDir": "out",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@main/*": ["src/main/*"],
+      "@renderer/*": ["src/renderer/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   },
   "include": ["src/main/**/*", "src/preload/**/*", "electron.vite.config.ts"]
 }
 ```
+
+> **Note:** `composite: true` + the same `baseUrl`/`paths` as the root config are required. Without them, files inside `src/main/` that import via `@main/*` fail to resolve under the composite-project typecheck. `ignoreDeprecations: "6.0"` silences the TS 6 deprecation warning on `baseUrl`.
 
 - [ ] **Step 1.4 — Electron-Vite config**
 
