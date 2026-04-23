@@ -1,0 +1,11 @@
+{
+  "id": "bottom_caption",
+  "safe_area_pct": { "top": 0.6, "left": 0.08, "right": 0.08, "bottom": 0.08 },
+  "headline": { "font": "Inter-Bold", "size_pct": 0.055, "align": "left" },
+  "subhead":  { "font": "Inter-Regular", "size_pct": 0.028, "align": "left", "margin_top_pct": 0.012 },
+  "bullets":  { "font": "Inter-Regular", "size_pct": 0.022, "align": "left", "gap_pct": 0.008 },
+  "cta":      { "font": "Inter-Bold", "size_pct": 0.024, "align": "left", "margin_top_pct": 0.02,
+                 "background_box": { "padding_pct": 0.01 } },
+  "text_color_rule": "auto_contrast_against_bg",
+  "shadow": { "blur": 12, "color": "rgba(0,0,0,0.35)", "offset_y": 2 }
+}
