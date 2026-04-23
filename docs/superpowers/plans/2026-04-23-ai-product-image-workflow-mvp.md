@@ -223,7 +223,7 @@ pnpm add -D electron electron-vite vite @vitejs/plugin-react \
       "@renderer/*": ["src/renderer/*"],
       "@shared/*": ["src/shared/*"]
     },
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+    "types": ["node", "vite/client", "vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src/renderer/**/*", "tests/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
