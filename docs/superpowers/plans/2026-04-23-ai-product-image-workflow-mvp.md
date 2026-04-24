@@ -1047,7 +1047,7 @@ const mockResult = {
     category: 'sneaker', material: ['leather'], color_palette: ['off-white'],
     style_tone: 'minimalist', target_audience: 'young adults', key_features: ['breathable']
   },
-  usage: { promptTokens: 120, completionTokens: 60 }
+  usage: { inputTokens: 120, outputTokens: 60 }
 }
 
 vi.mock('ai', () => ({ generateObject: vi.fn(async () => mockResult) }))
@@ -1116,7 +1116,7 @@ export const geminiUnderstand: UnderstandProvider = {
       schema: ProductUnderstandingSchema,
       messages: [{ role: 'user', content: [{ type: 'text', text: PROMPT }, { type: 'image', image }] }]
     })
-    ctx.logger('understand.done', { tokensIn: usage?.promptTokens, tokensOut: usage?.completionTokens })
+    ctx.logger('understand.done', { tokensIn: usage?.inputTokens, tokensOut: usage?.outputTokens })
     return object
   }
 }
@@ -1149,7 +1149,7 @@ const fakePlan = {
   overlay_layout: 'bottom_caption'
 }
 
-vi.mock('ai', () => ({ generateObject: vi.fn(async () => ({ object: fakePlan, usage: { promptTokens: 400, completionTokens: 120 } })) }))
+vi.mock('ai', () => ({ generateObject: vi.fn(async () => ({ object: fakePlan, usage: { inputTokens: 400, outputTokens: 120 } })) }))
 vi.mock('@ai-sdk/anthropic', () => ({ anthropic: () => 'MOCK_MODEL' }))
 
 import { claudeSonnetPlan } from '@main/providers/plan/claude-sonnet-4-6'
@@ -1216,7 +1216,7 @@ export const claudeSonnetPlan: PlanProvider = {
       system: SYSTEM,
       prompt: userMsg
     })
-    ctx.logger('plan.done', { tokensIn: usage?.promptTokens, tokensOut: usage?.completionTokens })
+    ctx.logger('plan.done', { tokensIn: usage?.inputTokens, tokensOut: usage?.outputTokens })
     return object
   }
 }
