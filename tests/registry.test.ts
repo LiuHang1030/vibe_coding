@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ProviderRegistry } from '@main/providers/registry'
+import { registerAll, registry } from '@main/providers'
 import type { StageProvider } from '@main/pipeline/contracts'
 
 function fakeProvider(stage: any, id: string): StageProvider<any, any> {
@@ -42,5 +43,14 @@ describe('ProviderRegistry', () => {
     reg.register(fakeProvider('plan', 'p1'))
     reg.register(fakeProvider('plan', 'p2'))
     expect(reg.resolveOrdered('plan', ['missing', 'p2', 'p1']).map(p => p.id)).toEqual(['p2', 'p1'])
+  })
+})
+
+describe('registerAll bootstrap', () => {
+  it('populates one provider per stage', () => {
+    registerAll()
+    for (const stage of ['extract','understand','plan','compose','overlay'] as const) {
+      expect(registry.listByStage(stage).length).toBeGreaterThanOrEqual(1)
+    }
   })
 })
