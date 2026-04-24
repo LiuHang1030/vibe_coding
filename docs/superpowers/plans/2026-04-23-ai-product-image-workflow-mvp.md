@@ -1249,7 +1249,8 @@ import { join } from 'node:path'
 
 const fakeResponse = { candidates: [{ content: { parts: [{ inlineData: { data: Buffer.from([0,1,2,3]).toString('base64'), mimeType: 'image/png' } }] } }] }
 vi.mock('@google/genai', () => ({
-  GoogleGenAI: vi.fn().mockImplementation(() => ({ models: { generateContent: vi.fn(async () => fakeResponse) } }))
+  // Regular function (not arrow) so the mock is constructable via `new GoogleGenAI(...)` in vitest 4.
+  GoogleGenAI: vi.fn().mockImplementation(function () { return { models: { generateContent: vi.fn(async () => fakeResponse) } } })
 }))
 
 import { nanoBanana } from '@main/providers/compose/nano-banana'
