@@ -1482,11 +1482,14 @@ import { describe, it, expect, vi } from 'vitest'
 
 const memKV: Record<string, any> = {}
 vi.mock('electron-store', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    get: (k: string) => memKV[k],
-    set: (k: string, v: any) => { memKV[k] = v },
-    delete: (k: string) => { delete memKV[k] }
-  }))
+  // Regular function (not arrow) so `new Store(...)` works in vitest 4.
+  default: vi.fn().mockImplementation(function () {
+    return {
+      get: (k: string) => memKV[k],
+      set: (k: string, v: any) => { memKV[k] = v },
+      delete: (k: string) => { delete memKV[k] }
+    }
+  })
 }))
 vi.mock('electron', () => ({
   safeStorage: {
