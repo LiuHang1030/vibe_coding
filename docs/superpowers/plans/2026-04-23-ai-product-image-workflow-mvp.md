@@ -1404,19 +1404,26 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createRun, writeMetadata, readMetadata } from '@main/storage/runs-dir'
 
+async function makeBaseDirWithInput() {
+  const baseDir = await fs.mkdtemp(join(tmpdir(), 'ps-runs-'))
+  const input = join(baseDir, 'in.jpg')
+  await fs.writeFile(input, Buffer.from([0]))
+  return { baseDir, input }
+}
+
 describe('runs-dir', () => {
   it('createRun makes a timestamped folder and returns runId+runDir', async () => {
-    const baseDir = await fs.mkdtemp(join(tmpdir(), 'ps-runs-'))
-    const { runId, runDir } = await createRun(baseDir, '/tmp/a.jpg', 'sneaker')
+    const { baseDir, input } = await makeBaseDirWithInput()
+    const { runId, runDir } = await createRun(baseDir, input, 'sneaker')
     expect(runId).toMatch(/\d{4}-\d{2}-\d{2}T/)
     expect(runId).toContain('_sneaker')
     const stat = await fs.stat(runDir); expect(stat.isDirectory()).toBe(true)
   })
 
   it('writeMetadata + readMetadata round-trip', async () => {
-    const baseDir = await fs.mkdtemp(join(tmpdir(), 'ps-runs-'))
-    const { runDir } = await createRun(baseDir, '/tmp/a.jpg', 'sneaker')
-    const meta = { run_id: 'x', input_path: '/tmp/a.jpg', size: '1:1', stages: [], total_cost_usd: 0, created_at: new Date().toISOString() }
+    const { baseDir, input } = await makeBaseDirWithInput()
+    const { runDir } = await createRun(baseDir, input, 'sneaker')
+    const meta = { run_id: 'x', input_path: input, size: '1:1', stages: [], total_cost_usd: 0, created_at: new Date().toISOString() }
     await writeMetadata(runDir, meta)
     expect((await readMetadata(runDir)).run_id).toBe('x')
   })
